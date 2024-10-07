@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="assets/css/globals.css" />
+    <link rel="stylesheet" href="assets/css/styleguide.css" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" />
+    <style>
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+      }
+
+      .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        font-family: "Inter", Helvetica;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #f1f1f1;
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      .nested-dropdown {
+        position: relative;
+      }
+
+      .nested-dropdown-content {
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: 0;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+      }
+
+      .nested-dropdown:hover .nested-dropdown-content {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header-navigation">
+      <div class="overlap-group">
+        <img class="logo" src="assets/images/image 2.png" alt="Logo" />
+        <div class="frame">
+          <div class="sign-in">SIGN IN</div>
+          <img class="line" src="assets/images/line-301-2.svg" alt="Line Divider" />
+          <div class="sign-UP-FOR-FREE">SIGN UP FOR FREE</div>
+        </div>
+        <ul class="nav">
+          <li href="#" class="item-nav">
+            <div class="text-wrapper">HOME</div>
+          </li>
+          <li href="#" class="item-nav">
+            <div class="HOME">SALE</div>
+          </li>
+          <li href="#" class="item-nav">
+            <div class="HOME">BUNDLE & SAVE</div>
+          </li>
+          <li class="item-nav dropdown">
+            <div class="HOME">SHOP BY CATEGORY <i class="bi bi-chevron-down"></i></div>
+            <div class="dropdown-content">
+              <div class="nested-dropdown">
+                <a href="#">ITEM 01 <i class="bi bi-chevron-right"></i></a>
+                <div class="nested-dropdown-content">
+                  <a href="#">ITEM 05</a>
+                  <a href="#">ITEM 06</a>
+                </div>
+              </div>
+              <a href="#">ITEM 02</a>
+              <a href="#">ITEM 03</a>
+              <a href="#">ITEM 04</a>
+            </div>
+          </li>
+          <li class="item-nav">
+            <div class="HOME">SUPPORT</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NEW PRODUCTS -->
+    <div class="container">
+        <h1>NEW PRODUCTS</h1> <br>
+        <p>Choose the headset that best suits your needs. We offer top-quality options with <br> a variety of features to enhance your audio experience</p>
+
+        <div class="products">
+            <div class="product">
+                <img src="assets/images/fone.png" alt="Gabiné K-29 Premium Headset">
+                <h2>Gabini® K-29 Premium Headset</h2>
+                <p>with Multi-Device Connectivity and Noise-Canceling Technology, Black.</p>
+                <div class="price-button-container">
+                    <div class="price">
+                        <span>$139.99</span> 94.99
+                    </div>
+                    <div class="add-to-cart">ADD TO CART</div>
+                </div>
+            </div>
+
+            <div class="product">
+                <img src="assets/images/fone.png" alt="Gabiné K-29 Premium Headset">
+                <h2>Gabini® K-29 Premium Headset</h2>
+                <p>with Multi-Device Connectivity and Noise-Canceling Technology, Black.</p>
+                <div class="price-button-container">
+                    <div class="price">
+                        <span>$139.99</span> 94.99
+                    </div>
+                    <div class="add-to-cart">ADD TO CART</div>
+                </div>
+            </div>
+
+            <div class="product">
+                <img src="assets/images/fone.png" alt="Gabiné K-29 Premium Headset">
+                <h2>Gabini® K-29 Premium Headset</h2>
+                <p>with Multi-Device Connectivity and Noise-Canceling Technology, Black.</p>
+                <div class="price-button-container">
+                    <div class="price">
+                        <span>$139.99</span> 94.99
+                    </div>
+                    <div class="add-to-cart">ADD TO CART</div>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <script src="assets/js/script.js"></script>
+  </body>
+</html>
