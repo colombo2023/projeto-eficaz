@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+  font-family: "Montserrat", sans-serif;
+  ;
+  padding: 0 6%;
+}
+
+
+
+
+/* SECAO 1*/
+
+.secao_1 {
+  height: 700px;
+}
+
+.secao_1-container {
+  display: flex;
+}
+
+.secao_bloco {
+  margin: 1px;
+  width: 50%;
+  height: 600px;
+}
+
+.secao_bloco h1 {
+  padding-top: 40px;
+  padding-left: 35%;
+  font-size: 65px;
+  font-weight: bold;
+  text-shadow: 1px 2px 1px 1px rgba(110, 110, 110, 0.603);
+}
+
+.secao_p {
+  padding-top: 40px;
+  padding-left: 35%;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.secao_bloco button {
+  margin-top: 40px;
+  margin-left: 35%;
+  width: 210px;
+  height: 55px;
+  border: 1px solid black;
+  border-radius: 25px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+
+.seta {
+  font-size: 22px;
+  margin-left: 20px;
+}
+
+
+.feedback {
+  display: flex;
+}
+
+
+.avaliacao {
+  margin-top: 40px;
+  margin-left: 35%;
+  display: flex;
+  font-size: 20px;
+  font-weight: bold;
+  padding-left: 10px;
+}
+
+.estrela {
+  color: orange;
+  font-size: 20px;
+  padding-left: 5px;
+}
+
+.aumento {
+  margin-top: 20px;
+  margin-left: 50px;
+}
+
+.aumento h2 {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+
+
+.fone_container {
+  position: relative;
+  display: inline-block;
+}
+
+.fone_container img {
+  margin-top: 50px;
+  width: 98%;
+}
+
+.btn_nuvem {
+  position: absolute;
+  top: 68%;
+  left: -250px;
+  width: 150px;
+  height: 90px;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 30px;
+  font-size: 15px;
+  display: flex;
+  padding: 10px;
+  padding-left: 40px
+}
+
+.bateria {
+  font-size: 30px;
+}
+
+.btn_nuvem-2 {
+  position: absolute;
+  top: 28%;
+  left: 70px;
+  width: 150px;
+  height: 90px;
+  display: flex;
+  padding: 10px;
+  padding-left: 40px
+}
+
+.medalha {
+  font-size: 30px;
+}
+
+
+
+/* SECAO 2 */
+
+.secao_2 {
+  height: 650px;
+  background: url(/assets/image/ImagemFundo.png);
+  border-radius: 30px;
+  border: 1px solid black;
+  display: flex;
+  background-size: cover;
+
+}
+
+
+.secao_2-container {
+  padding-top: 110px;
+  padding-left: 200px;
+  color: white;
+}
+
+.secao_2-container h1 {
+  font-size: 70px;
+  font-weight: bold;
+
+}
+
+.secao_2-container p {
+  margin-top: 10px;
+}
+
+.clock {
+  margin-top: 10px;
+  font-size: 100px;
+  display: flex;
+
+}
+
+.clock_container{
+  padding: 10px;
+}
+
+.clock_p{
+  font-size: 17px;
+  margin-left: 10px;
+}
+
+.secao_2-container button {
+  margin-top: 20px;
+  width: 180px;
+  height: 50px;
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 25px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.secao_2-imagem img {
+  margin-top: 50px;
+  margin-left: 110px;
+  width: 90%;
+}
