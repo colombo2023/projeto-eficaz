@@ -1,151 +1,263 @@
-<script setup>
-import { ref } from "vue";
+<script>
+import axios from "axios";
 
-const email = ref("");
-const emailValido = ref(null);
+export default {
+  data() {
+    return {
+      username: "",
+      password: "",
+      remember: false,
+    };
+  },
+  methods: {
+    // Função para lidar com o envio do formulário
+    async handleLogin() {
+      try {
+        const response = await axios.post("https://sua-api.com/login", {
+          username: this.username,
+          password: this.password,
+        });
 
-function validarEmail() {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email.value);
-}
-
-async function enviarFormulario() {
-  emailValido.value = validarEmail();
-
-  // if (emailValido.value) {
-  //   try {
-  //     const response = await fetch('https://seu-endpoint.com/api', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ email: email.value }),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Erro ao enviar o formulário');
-  //     }
-
-  //     const data = await response.json();
-  //     console.log('Formulário enviado com sucesso:', data);
-  //     // Aqui você pode limpar o formulário ou mostrar uma mensagem de sucesso.
-  //     email.value = ''; // Limpa o campo após envio bem-sucedido
-  //     emailValido.value = null; // Reseta a validação
-  //   } catch (error) {
-  //     console.error('Erro:', error);
-  //   }
-  // } else {
-  //   console.log("Erro: email inválido.");
-  // }
-}
+        // Verificação de resposta do servidor
+        if (response.status === 200) {
+          alert("Login realizado com sucesso!");
+          // Salvar token no localStorage se 'Lembrar' estiver marcado
+          if (this.remember) {
+            localStorage.setItem("authToken", response.data.token);
+          }
+          // Redirecionar após o login bem-sucedido
+          this.$router.push("/dashboard");
+        } else {
+          alert("Credenciais inválidas.");
+        }
+      } catch (error) {
+        console.error("Erro ao fazer login:", error);
+        alert("Erro ao conectar-se à API.");
+      }
+    },
+    // Função para redirecionar para a página de registro
+    redirectToRegister() {
+      this.$router.push("/registration");
+    },
+  },
+};
 </script>
 
-<template>
-  <div class="flex bg-black">
-    <div
-      class="bg-[#FFF] w-[480px] h-[950px] flex flex-col items-center border shadow-lg justify-start"
-    >
-      <h1
-        class="text-black font-bold text-xl text-center w-[280px] h-[30px] mt-[248px] mb-[20px]"
-      >
-        Iniciar sessão na sua conta
-      </h1>
 
-      <form @submit.prevent="enviarFormulario">
-        <div class="flex flex-col items-start w-[410px] mt-8">
-          <label class="text-black font-semibold text-base leading-normal mb-2">
-            E-mail
-          </label>
-          <div class="relative w-full">
-            <div class="flex">
-              <input
-                v-model="email"
-                type="email"
-                class="w-full h-[50px] rounded-lg bg-[#F1F3F6] p-2 pr-10 border"
-                placeholder="eduardo@email.com"
-              />
-              <img
-                class="w-50px h-50px bg-black p-[14.5px] rounded-lg"
-                src="../assets/icons/mail.svg"
-                alt=""
-              />
-            </div>
-            <p v-if="emailValido === false" style="color: red">
-              Email inválido!
-            </p>
-            <p v-if="emailValido === true" style="color: green">
-              Email válido!
-            </p>
+<template>
+  <div class="app">
+    <!-- Círculos de fundo -->
+    <div class="circle small"></div>
+    <div class="circle medium"></div>
+    <div class="circle extra-large"></div>
+    <div class="circle final"></div>
+
+    <!-- Container principal -->
+    <div class="container">
+      <!-- Seção esquerda -->
+      <div class="left-section">
+        <h1>BEM VINDO</h1>
+        <button @click="redirectToRegister">Criar Conta</button>
+      </div>
+
+      <!-- Seção direita -->
+      <div class="right-section">
+        <h2>INFORMAÇÕES</h2>
+        <form @submit.prevent="handleLogin">
+          <div class="form-group">
+            <img src="https://img.icons8.com/ios-filled/50/000000/user.png" alt="user icon" />
+            <input type="text" v-model="username" placeholder="Username" required />
           </div>
-        </div>
-        <div class="flex flex-col items-start w-[410px] mt-8">
-          <label class="text-black font-semibold text-base leading-normal mb-2">
-            Senha
-          </label>
-          <div class="flex relative w-full">
-            <input
-              type="password"
-              class="w-full h-[50px] rounded-lg bg-[#F1F3F6] p-2 pr-10 border"
-              placeholder="Insira a sua senha"
-            />
-            <img
-              class="w-50px h-50px bg-black p-[16px] rounded-lg"
-              src="../assets/icons/cadeado.svg"
-              alt=""
-            />
+          <div class="form-group">
+            <img src="https://img.icons8.com/ios-filled/50/000000/lock.png" alt="lock icon" />
+            <input type="password" v-model="password" placeholder="Senha" required />
           </div>
-        </div>
-        <div class="flex justify-between items-center w-[410px] mt-4">
-          <div class="flex items-center">
-            <input
-              id="lembrar"
-              type="checkbox"
-              class="w-4 h-4 border border-gray-300 rounded-sm focus:ring-2 focus:ring-blue-500"
-            />
-            <label
-              for="lembrar"
-              class="ml-2 text-[14px] leading-normal text-black text-sm font-semibold"
-            >
-              Lembrar minha senha
-            </label>
+          <div class="remember">
+            <input type="checkbox" v-model="remember" id="remember" />
+            <label for="remember">Lembrar</label>
           </div>
-          <a href="#" class="leading-normal text-black text-sm font-semibold">
-            Esqueceu a senha?
-          </a>
-        </div>
-        <div>
-          <button
-            type="submit"
-            class="flex w-[410px] h-[50px] mb-[41px] bg-black text-white font-semibold items-center justify-center mt-[33px] rounded-lg shadow-custom-blue"
-          >
-            Login
-          </button>
-          <div class="flex items-center justify-center mb-[33px]">
-            <hr class="w-[175px] h-[1px] bg-[#9D9D9D]" />
-            <span class="mx-4 text-[#9D9D9D]">OU</span>
-            <hr class="w-[175px] h-[1px] bg-[#9D9D9D]" />
-          </div>
-          <button
-            type="button"
-            class="flex w-[410px] h-[50px] mb-[41px] bg-black text-white font-semibold items-center justify-center mt-[33px] rounded-lg shadow-custom-blue"
-          >
-            Registre-se
-          </button>
-        </div>
-      </form>
-    </div>
-    <div class="relative">
-      <img src="../assets/images/card.png" class="w-[1500px] h-[953px]" />
-      <img
-        src="../assets/images/logo.png"
-        class="absolute w-[561px] top-[339px] left-[750px]"
-      />
-      <p
-        class="absolute top-[455px] text-white left-[750px] font-inter font-bold text-[24px] leading-[44px] tracking-[-0.04em]"
-      >
-        Bem-vindo à Gabini Store! Os melhores headsets <br />
-        com a mais alta qualidade, você encontra aqui.
-      </p>
+          <button type="submit">Entrar</button>
+        </form>
+      </div>
     </div>
   </div>
 </template>
+
+
+
+
+
+<style scoped>
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #ffffff;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.circle {
+  border-radius: 50%;
+  position: absolute;
+  opacity: 0.9;
+}
+
+.circle.small {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 600px;
+  background: #D9D9D9;
+  z-index: 3;
+}
+
+.circle.medium {
+  width: 450px;
+  height: 450px;
+  background: linear-gradient(207deg, #683636 30.01%, #B8B8B8 68.84%);
+  left: 300px;
+  margin-top: 150px;
+  z-index: 2;
+}
+
+.circle.extra-large {
+  width: 650px;
+  height: 650px;
+  background: #7E7E7E;
+  left: -260px;
+  z-index: 1;
+}
+
+.circle.final {
+  width: 450px;
+  height: 450px;
+  background: linear-gradient(194deg, #3A3A3A 46.22%, #5c2323 118.41%);
+  right: 50px;
+  z-index: 7;
+}
+
+/* Ajuste do tamanho e centralização do container */
+.container {
+  display: flex;
+  width: 800px; /* Reduzi o tamanho da largura */
+  height: 500px; /* Reduzi o tamanho da altura */
+ 
+  background: rgba(58, 58, 58, 0.8);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  margin: auto;
+}
+
+/* Seção Esquerda */
+.left-section {
+  flex: 0.4;
+  background: linear-gradient(202deg, #d9d9d9b7 42.19%, #2b2b2cb4 145%);
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 120;
+}
+
+.left-section h1 {
+  font-size: 48px; /* Ajuste no tamanho da fonte */
+  font-weight: 700;
+  margin-bottom: 100px;
+}
+
+.left-section button {
+  width: 200px;
+  height: 40px;
+  border-radius: 30px;
+  background-color: #FFF;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.left-section button:hover {
+  background-color: #ccc;
+}
+
+/* Seção Direita */
+.right-section {
+  flex: 0.6;
+  background: linear-gradient(202deg, #e1e1e1b6 42.19%, #2b2b2c 145%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  z-index: 121;
+}
+
+.right-section h2 {
+  color: #FFF;
+  font-size: 36px;
+  font-weight: 900;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  width: 80%;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 15px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  background-color: #ddd;
+  outline: none;
+  padding-left: 50px;
+}
+
+.form-group img {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+}
+
+.form-group input:focus {
+  background-color: #e0e0e0;
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.right-section button {
+  width: 80%;
+  padding: 15px;
+  font-size: 1rem;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.right-section button:hover {
+  background-color: #444;
+}
+
+</style>
