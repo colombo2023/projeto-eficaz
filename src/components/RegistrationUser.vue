@@ -1,10 +1,9 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 const router = useRouter();
-const users = ref([]);
 const newUser = ref({
   nome: '',
   apelido: '',
@@ -17,15 +16,11 @@ const newUser = ref({
   endereco: []
 });
 
-function submit() {
-  router.push({ path: '/address', state: { user: newUser.value } });
-}
-
-const createUser = async () => {
+const submit = async () => {
   try {
-    const response = await axios.post('https://672017f0e7a5792f053074c2.mockapi.io/apa/user', newUser.value);
-    users.value.push(response.data); // Adiciona o novo usuário à lista
-    resetForm(); // Reseta o formulário
+    await axios.post('https://672017f0e7a5792f053074c2.mockapi.io/apa/user', newUser.value);
+    resetForm();
+    router.push('/address');
   } catch (error) {
     console.error('Erro ao criar usuário:', error);
   }
@@ -41,138 +36,179 @@ const resetForm = () => {
     dataNascimento: '',
     genero: '',
     telefone: '',
-    endereco: newEndereco.value.endereco
+    endereco: []
   };
+};
+
+const irParaLogin = () => {
+  router.push('/Login');
 };
 </script>
 
+
+
 <template>
-  <main>
-    <nav >
-      <div class="flex mt-7 mb-8 border-b">
-        <p class="relative ml-20 mr-20 pb-3 text-transparent bg-gradient-to-r from-[#03B1FF] to-[#97C4D8] bg-clip-text">
-          <b>Dados Pessoais</b>
-          <span class="absolute bottom-0 left-0 w-full h-[4px] bg-gradient-to-r from-[#03B1FF] to-[#97C4D8]"></span>  
-        </p>
-        <p class="text-[#718EBF]">
-          <b>Endereços</b>
-        </p>
+  <div class="registration-container">
+    <!-- Container combinado -->
+    <div class="combined-section">
+      <!-- Seção da esquerda (Boas-vindas) -->
+      <div class="welcome-section">
+        <h2>BEM VINDO</h2>
+        <h3><span>Novo</span> Cadastro</h3>
+        <button class="create-account" @click="irParaLogin">Fazer Login</button>
       </div>
-    </nav>
-    <div class="registro grid md:grid-cols-5 md:gap-4 ml-5 mr-5">
-      <div class="col-span-1 imgPerfil">
-        <img src="../assets/images/fotoPerfil.png" alt="" class="mx-auto">
-      </div>
-      <form @submit.prevent="submit" class="col-span-4 grid md:grid-cols-2">
-        <div class="flex flex-col col-span-1 gap-2 max-w-[36rem] w-full mx-auto">
-          <label>Nome completo</label>
-          <div class="flex">
-            <input type="text" v-model="newUser.nome" id="nomeCompleto" placeholder="Ex: Eduardo Evaristo" class="w-full campos"></input>
-            <svg class="h-11 w-11 icons" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-            </svg>
+
+      <!-- Linha divisória -->
+      <div class="divider"></div>
+
+      <!-- Seção da direita (Formulário de Cadastro) -->
+      <div class="registration-section">
+        <h2><span>INFO</span>RMAÇÕES</h2>
+        <form @submit.prevent="submit">
+          <!-- Campos do formulário -->
+          <div class="input-group">
+            <input type="text" v-model="newUser.nome" placeholder="Nome completo" />
           </div>
-          
-          <label>Apelido</label>
-          <div class="flex">
-            <input type="text" v-model="newUser.apelido" id="apelido" placeholder="Ex: edueevaristo" class="w-full campos"></input>
-            <svg class="h-11 w-11 icons" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-            </svg>
+          <div class="input-group">
+            <input type="text" v-model="newUser.apelido" placeholder="Apelido" />
           </div>
-          
-          <label>E-mail</label>
-          <div class="flex">
-            <input type="email" v-model="newUser.email" id="email" placeholder="Ex: eduardo@gmail.com" class="w-full campos"></input>
-            <svg class="h-11 w-11 icons"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-            </svg>
+          <div class="input-group">
+            <input type="email" v-model="newUser.email" placeholder="E-mail" />
           </div>
-          
-          <label>Data de Nascimento</label>
-          <div class="flex">
-            <input type="date" v-model="newUser.dataNascimento" id="data" class="w-full campos"></input>
-            <svg class="h-11 w-11 icons"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />  <line x1="16" y1="2" x2="16" y2="6" />  <line x1="8" y1="2" x2="8" y2="6" />  <line x1="3" y1="10" x2="21" y2="10" />
-            </svg>
+          <div class="input-group">
+            <input type="date" v-model="newUser.dataNascimento" placeholder="Data de Nascimento" />
           </div>
-        </div>
-        <div class="flex flex-col col-span-1 gap-2 max-w-[36rem] w-full mx-auto">
-          <label>CPF</label>
-          <div class="flex">
-            <input type="text" v-model="newUser.cpf" id="email" placeholder="Ex: 000.000.000-00" class="w-full campos"></input>
-            <svg class="h-11 w-11 icons"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z"/>  <rect x="3" y="4" width="18" height="16" rx="3" />  <circle cx="9" cy="10" r="2" />  <line x1="15" y1="8" x2="17" y2="8" />  <line x1="15" y1="12" x2="17" y2="12" />  <line x1="7" y1="16" x2="17" y2="16" />
-            </svg>
+          <div class="input-group">
+            <input type="text" v-model="newUser.cpf" placeholder="CPF" />
           </div>
-          <label>Gênero</label>
-          <div class="flex">
-            <select v-model="newUser.genero" id="genero" class="w-full campos">
+          <div class="input-group">
+            <select v-model="newUser.genero">
+              <option value="" disabled selected>Selecione o Gênero</option>
               <option>Masculino</option>
               <option>Feminino</option>
-              <option>Outro..</option>
+              <option>Outro</option>
             </select>
-            <svg class="h-11 w-11 icons" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-            </svg>
           </div>
-          <label>Senha</label>
-          <div class="flex">
-            <input type="password" v-model="newUser.senha" id="senha" placeholder="Ex: **********" class="w-full campos"></input>
-            <svg class="h-11 w-11 icons"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="12" cy="12" r="2" />  <path d="M2 12l1.5 2a11 11 0 0 0 17 0l1.5 -2" />  <path d="M2 12l1.5 -2a11 11 0 0 1 17 0l1.5 2" />
-            </svg>
+          <div class="input-group">
+            <input type="password" v-model="newUser.senha" placeholder="Senha" />
           </div>
-          <label>Telefone</label>
-          <div class="flex">
-            <input type="text" v-model="newEndereco.bairro" id="telefone" placeholder="Ex: (00) 0000-0000" class="w-full campos"></input>
-            <svg class="h-11 w-11 icons"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
-            </svg>
+          <div class="input-group">
+            <input type="text" v-model="newUser.telefone" placeholder="Telefone" />
           </div>
-        </div>
-        <button class="button" type="submit"><b>Salvar</b></button>
-      </form>
+          <button type="submit" class="register-button">Salvar</button>
+        </form>
+      </div>
     </div>
-    <div class="text-right">
-          <router-link to="/"><button class="button"><b>Voltar ao início</b></button></router-link>
-          <router-link to="/address"><button class="button"><b>Próximo Passo</b></button></router-link>
-    </div>
-  </main>
+  </div>
 </template>
 
+
+
 <style scoped>
-input[type="date"]::-webkit-calendar-picker-indicator {
-  display: none;
+.registration-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #515151;
 }
-.button{
-    color: white;
-    background-color: black;
-    padding: 10px 0px;
-    margin: 20px;
-    width: 300px;
-    border-radius: 10px;
+
+.combined-section {
+  display: flex;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  overflow: hidden;
 }
-.campos{
-    border-radius: 5px 0px 0px 5px;
-    color: black;
-    background-color: #F1F3F6;
-    padding: 10px;
-    margin-bottom: 20px;
+
+.welcome-section, .registration-section {
+  padding: 40px;
+  color: #fff;
 }
-.icons{
-    border-radius: 0px 5px 5px 0px;
-    color: white;
-    background-color: black;
-    padding: 8px;
-    margin-bottom: 20px;
+
+.welcome-section {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(202.46deg, #D9D9D9 42.19%, #2B2B2C 145%);
 }
-@media (max-width: 768px) {
-.button{
-  width: 250px;
+
+.welcome-section h2 {
+  margin-bottom: 20px;
 }
-.imgPerfil {
-  display: none;
+
+.welcome-section h3 {
+  margin-bottom: 40px;
+  font-size: 40px;
+  color: #000;
 }
+
+.welcome-section h3 span {
+  text-decoration: underline;
+  color: #000;
+}
+
+.create-account {
+  width: 200px;
+  padding: 10px;
+  border-radius: 40px;
+  background-color: #444;
+  color: #fff;
+  cursor: pointer;
+}
+
+.create-account:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.divider {
+  width: 1px;
+  background-color: #555;
+}
+
+.registration-section {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
+
+.registration-section h2 {
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.registration-section span {
+  text-decoration: underline;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group input, .input-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #555;
+  border-radius: 50px;
+  background-color: #33333375;
+  color: #ffffff;
+}
+
+.register-button {
+  padding: 12px;
+  background-color: #03B1FF;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50px;
+  margin-top: 20px;
+}
+
+.register-button:hover {
+  background-color: #007ACC;
 }
 </style>
