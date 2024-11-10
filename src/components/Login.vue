@@ -123,11 +123,12 @@ body {
 }
 
 .circle.extra-large {
-  width: 650px;
-  height: 650px;
-  background: #7E7E7E;
-  left: -260px;
+  width: 890px;
+  height: 890px;
+  background: #838282;
+  left: -320px;
   z-index: 1;
+  margin-bottom: 150px
 }
 
 .circle.final {
