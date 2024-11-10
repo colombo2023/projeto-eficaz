@@ -1,214 +1,238 @@
-<script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+<script>
 import axios from 'axios';
 
-const router = useRouter();
-const newUser = ref({
-  nome: '',
-  apelido: '',
-  email: '',
-  senha: '',
-  cpf: '',
-  dataNascimento: '',
-  genero: '',
-  telefone: '',
-  endereco: []
-});
+export default {
+  data() {
+    return {
+      showAddressModal: false,
+      newUser: {
+        nome: '',
+        sobrenome: '',
+        username: '',
+        nascimento: '',
+        email: '',
+        senha: '',
+        confirmacaoSenha: '',
+        telefone: '',
+        cpf: '',
+        foto: null
+      },
+      address: {
+        rua: '',
+        numero: '',
+        bairro: '',
+        cidade: '',
+        estado: '',
+        cep: ''
+      }
+    };
+  },
+  methods: {
+    handleFileUpload(event) {
+      this.newUser.foto = event.target.files[0];
+    },
+    openAddressModal() {
+      if (this.validateUser()) {
+        this.showAddressModal = true;
+      } else {
+        alert('Preencha todos os campos obrigatórios.');
+      }
+    },
+    validateUser() {
+      return (
+        this.newUser.nome &&
+        this.newUser.sobrenome &&
+        this.newUser.username &&
+        this.newUser.email &&
+        this.newUser.senha &&
+        this.newUser.confirmacaoSenha &&
+        this.newUser.telefone &&
+        this.newUser.cpf
+      );
+    },
+    async submit() {
+      if (!this.validateAddress()) {
+        alert('Preencha todos os campos de endereço.');
+        return;
+      }
 
-const submit = async () => {
-  try {
-    await axios.post('https://672017f0e7a5792f053074c2.mockapi.io/apa/user', newUser.value);
-    resetForm();
-    router.push('/address');
-  } catch (error) {
-    console.error('Erro ao criar usuário:', error);
+      const formData = new FormData();
+      Object.keys(this.newUser).forEach(key => {
+        if (this.newUser[key]) formData.append(key, this.newUser[key]);
+      });
+      Object.keys(this.address).forEach(key => {
+        formData.append(key, this.address[key]);
+      });
+
+      try {
+        const response = await axios.post('/api/registrar', formData);
+        if (response.status === 201) {
+          alert('Registro realizado com sucesso!');
+          this.resetForm();
+        }
+      } catch (error) {
+        console.error('Erro ao registrar:', error);
+        alert('Erro ao registrar. Tente novamente.');
+      }
+    },
+    validateAddress() {
+      return (
+        this.address.rua &&
+        this.address.numero &&
+        this.address.bairro &&
+        this.address.cidade &&
+        this.address.estado &&
+        this.address.cep
+      );
+    },
+    resetForm() {
+      this.newUser = {
+        nome: '',
+        sobrenome: '',
+        username: '',
+        nascimento: '',
+        email: '',
+        senha: '',
+        confirmacaoSenha: '',
+        telefone: '',
+        cpf: '',
+        foto: null
+      };
+      this.address = {
+        rua: '',
+        numero: '',
+        bairro: '',
+        cidade: '',
+        estado: '',
+        cep: ''
+      };
+      this.showAddressModal = false;
+    }
   }
-};
-
-const resetForm = () => {
-  newUser.value = {
-    nome: '',
-    apelido: '',
-    email: '',
-    senha: '',
-    cpf: '',
-    dataNascimento: '',
-    genero: '',
-    telefone: '',
-    endereco: []
-  };
-};
-
-const irParaLogin = () => {
-  router.push('/Login');
 };
 </script>
 
-
-
 <template>
-  <div class="registration-container">
-    <!-- Container combinado -->
-    <div class="combined-section">
-      <!-- Seção da esquerda (Boas-vindas) -->
-      <div class="welcome-section">
-        <h2>BEM VINDO</h2>
-        <h3><span>Novo</span> Cadastro</h3>
-        <button class="create-account" @click="irParaLogin">Fazer Login</button>
+  <div class="app">
+    <div class="circle small"></div>
+    <div class="circle medium"></div>
+    <div class="circle extra-large"></div>
+    <div class="circle final"></div>
+
+    <div v-if="!showAddressModal" class="container">
+      <div class="left-section">
+        <h2>REGISTRE-SE</h2>
+        <div class="input-group">
+          <input type="text" placeholder="Nome" v-model="newUser.nome" required />
+        </div>
+        <div class="input-group">
+          <input type="text" placeholder="Sobrenome" v-model="newUser.sobrenome" required />
+        </div>
+        <div class="input-group">
+          <input type="text" placeholder="Username" v-model="newUser.username" required />
+        </div>
+        <div class="input-group">
+          <input type="date" v-model="newUser.nascimento" required />
+        </div>
+        <button @click="openAddressModal">Continuar para Endereço</button>
       </div>
 
-      <!-- Linha divisória -->
-      <div class="divider"></div>
+      <div class="right-section">
+        <h2>INFORMAÇÕES</h2>
+        <div class="input-group">
+          <input type="email" placeholder="Email" v-model="newUser.email" required />
+        </div>
+        <div class="input-group">
+          <input type="password" placeholder="Senha" v-model="newUser.senha" required />
+        </div>
+        <div class="input-group">
+          <input type="password" placeholder="Confirmação" v-model="newUser.confirmacaoSenha" required />
+        </div>
+        <div class="input-group">
+          <input type="text" placeholder="CPF" v-model="newUser.cpf" required />
+        </div>
+        <div class="input-group">
+          <input type="text" placeholder="Telefone" v-model="newUser.telefone" required />
+        </div>
+        <div class="input-group">
+          <label for="file-upload" class="custom-file-upload">Selecionar Foto (Opcional)</label>
+          <input id="file-upload" type="file" @change="handleFileUpload" />
+        </div>
+      </div>
+    </div>
 
-      <!-- Seção da direita (Formulário de Cadastro) -->
-      <div class="registration-section">
-        <h2><span>INFO</span>RMAÇÕES</h2>
-        <form @submit.prevent="submit">
-          <!-- Campos do formulário -->
-          <div class="input-group">
-            <input type="text" v-model="newUser.nome" placeholder="Nome completo" />
-          </div>
-          <div class="input-group">
-            <input type="text" v-model="newUser.apelido" placeholder="Apelido" />
-          </div>
-          <div class="input-group">
-            <input type="email" v-model="newUser.email" placeholder="E-mail" />
-          </div>
-          <div class="input-group">
-            <input type="date" v-model="newUser.dataNascimento" placeholder="Data de Nascimento" />
-          </div>
-          <div class="input-group">
-            <input type="text" v-model="newUser.cpf" placeholder="CPF" />
-          </div>
-          <div class="input-group">
-            <select v-model="newUser.genero">
-              <option value="" disabled selected>Selecione o Gênero</option>
-              <option>Masculino</option>
-              <option>Feminino</option>
-              <option>Outro</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <input type="password" v-model="newUser.senha" placeholder="Senha" />
-          </div>
-          <div class="input-group">
-            <input type="text" v-model="newUser.telefone" placeholder="Telefone" />
-          </div>
-          <button type="submit" class="register-button">Salvar</button>
-        </form>
+    <div v-if="showAddressModal" class="modal">
+      <div class="modal-content">
+        <button @click="showAddressModal = false">Voltar</button>
+        <h2>Endereço</h2>
+        <div class="input-group">
+          <input type="text" placeholder="Rua" v-model="address.rua" required />
+        </div>
+        <div class="input-group">
+          <input type="text" placeholder="Número" v-model="address.numero" required />
+        </div>
+        <div class="input-group">
+          <input type="text" placeholder="Bairro" v-model="address.bairro" required />
+        </div>
+        <div class="input-group">
+          <input type="text" placeholder="Cidade" v-model="address.cidade" required />
+        </div>
+        <div class="input-group">
+          <input type="text" placeholder="Estado" v-model="address.estado" required />
+        </div>
+        <div class="input-group">
+          <input type="text" placeholder="CEP" v-model="address.cep" required />
+        </div>
+        <button @click="submit">Registrar</button>
       </div>
     </div>
   </div>
 </template>
 
-
-
 <style scoped>
-.registration-container {
+/* Estilos Gerais */
+body {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #515151;
-}
-
-.combined-section {
-  display: flex;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
+  margin: 0;
+  background-color: #ffffff;
   overflow: hidden;
 }
 
-.welcome-section, .registration-section {
-  padding: 40px;
-  color: #fff;
-}
+.circle { position: absolute; border-radius: 50%; }
 
-.welcome-section {
-  width: 400px;
+.small { width: 200px; height: 200px; background: #d9d9d9;}
+.medium { width: 450px; height: 450px; background: #b8b8b8;}
+.extra-large { width: 650px; height: 650px; background: #7e7e7e; }
+.final { width: 450px; height: 450px; background: #5c2323; }
+
+.container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(202.46deg, #D9D9D9 42.19%, #2B2B2C 145%);
+  width: 90%;
+  max-width: 900px;
+  background: rgba(58, 58, 58, 0.8);
+  border-radius: 20px;
+  padding: 30px;
 }
 
-.welcome-section h2 {
-  margin-bottom: 20px;
-}
+.left-section, .right-section { width: 45%; }
 
-.welcome-section h3 {
-  margin-bottom: 40px;
-  font-size: 40px;
-  color: #000;
-}
-
-.welcome-section h3 span {
-  text-decoration: underline;
-  color: #000;
-}
-
-.create-account {
-  width: 200px;
+input {
+  width: 100%;
   padding: 10px;
-  border-radius: 40px;
-  background-color: #444;
-  color: #fff;
-  cursor: pointer;
-}
-
-.create-account:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-}
-
-.divider {
-  width: 1px;
-  background-color: #555;
-}
-
-.registration-section {
-  display: flex;
-  flex-direction: column;
-  width: 500px;
-}
-
-.registration-section h2 {
-  text-align: center;
-  font-size: 30px;
-  margin-bottom: 20px;
-}
-
-.registration-section span {
-  text-decoration: underline;
-}
-
-.input-group {
   margin-bottom: 15px;
 }
 
-.input-group input, .input-group select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #555;
-  border-radius: 50px;
-  background-color: #33333375;
-  color: #ffffff;
-}
-
-.register-button {
-  padding: 12px;
-  background-color: #03B1FF;
+button {
+  background-color: #03b1ff;
+  color: #fff;
   border: none;
-  color: white;
-  cursor: pointer;
+  padding: 10px;
   border-radius: 50px;
-  margin-top: 20px;
+  cursor: pointer;
 }
-
-.register-button:hover {
-  background-color: #007ACC;
-}
+button:hover { background-color: #007acc; }
+.modal { display: flex; align-items: center; justify-content: center; }
 </style>
