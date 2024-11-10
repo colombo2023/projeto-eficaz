@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import { ref } from 'vue';
 
 export default {
   data() {
@@ -10,37 +11,39 @@ export default {
     };
   },
   methods: {
-    // Função para lidar com o envio do formulário
+    // Função para lidar com o envio do formulário de login
     async handleLogin() {
       try {
-        const response = await axios.post("https://sua-api.com/login", {
+        // Substituir o endpoint pela rota correta da API
+        const response = await axios.post('http://localhost:5000/api/login', {
           username: this.username,
           password: this.password,
         });
 
-        // Verificação de resposta do servidor
+        // Verificação da resposta do servidor
         if (response.status === 200) {
           alert("Login realizado com sucesso!");
+
           // Salvar token no localStorage se 'Lembrar' estiver marcado
-          if (this.remember) {
+          if (this.remember && response.data.token) {
             localStorage.setItem("authToken", response.data.token);
           }
-          // Redirecionar após o login bem-sucedido
+
+          // Redirecionar para o dashboard após login bem-sucedido
           this.$router.push("/dashboard");
         } else {
           alert("Credenciais inválidas.");
         }
       } catch (error) {
         console.error("Erro ao fazer login:", error);
-        alert("Erro ao conectar-se à API.");
+        alert("Erro ao fazer login. Tente novamente.");
       }
-    },
-    // Função para redirecionar para a página de registro
-    redirectToRegister() {
-      this.$router.push("/registration");
-    },
-  },
+    }
+  }
+
 };
+
+
 </script>
 
 
@@ -51,6 +54,10 @@ export default {
     <div class="circle medium"></div>
     <div class="circle extra-large"></div>
     <div class="circle final"></div>
+    <div class="circle additional1"></div>
+    <div class="circle additional2"></div>
+    <div class="circle additional3"></div>
+    
 
     <!-- Container principal -->
     <div class="container">
@@ -137,6 +144,16 @@ body {
   background: linear-gradient(194deg, #3A3A3A 46.22%, #5c2323 118.41%);
   right: 50px;
   z-index: 7;
+}
+
+.circle.additional1 { width: 300px; height: 300px; top: 65%; right: 20%;  background: #616161; }
+.circle.additional2 { width: 400px; height: 400px; top: 20%; left: 50%; background: #634949; }
+
+.circle.additional3 { width: 250px; 
+  height: 250px; 
+  bottom: 30%; 
+  left: 10%; 
+  background: linear-gradient(207deg, #683636 30.01%, #B8B8B8 68.84%); 
 }
 
 /* Ajuste do tamanho e centralização do container */

@@ -1,16 +1,16 @@
 <script>
+import { ref } from 'vue';
 import axios from 'axios';
 
 export default {
   data() {
     return {
-      showAddressModal: false,
       newUser: {
         nome: '',
         sobrenome: '',
+        email: '',
         username: '',
         nascimento: '',
-        email: '',
         senha: '',
         confirmacaoSenha: '',
         telefone: '',
@@ -18,41 +18,60 @@ export default {
         foto: null
       },
       address: {
+        cep: '',
         rua: '',
         numero: '',
         bairro: '',
         cidade: '',
-        estado: '',
-        cep: ''
-      }
+        estado: ''
+      },
+      showAddressModal: false // Estado para controlar o modal
     };
   },
   methods: {
-    handleFileUpload(event) {
-      this.newUser.foto = event.target.files[0];
-    },
-    openAddressModal() {
-      if (this.validateUser()) {
-        this.showAddressModal = true;
-      } else {
-        alert('Preencha todos os campos obrigatórios.');
+    // Função para buscar endereço com base no CEP
+    async buscarEndereco() {
+      const cep = this.address.cep.replace(/\D/g, ''); // Remove caracteres não numéricos
+      if (cep.length === 8) {
+        try {
+          const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+          if (response.data && !response.data.erro) {
+            const data = response.data;
+            this.address.rua = data.logradouro || '';
+            this.address.bairro = data.bairro || '';
+            this.address.cidade = data.localidade || '';
+            this.address.estado = data.uf || '';
+          } else {
+            alert('CEP não encontrado.');
+            this.resetAddressFields();
+          }
+        } catch (error) {
+          console.error('Erro ao buscar o CEP:', error);
+          alert('Erro ao buscar o CEP. Tente novamente.');
+        }
       }
     },
-    validateUser() {
-      return (
-        this.newUser.nome &&
-        this.newUser.sobrenome &&
-        this.newUser.username &&
-        this.newUser.email &&
-        this.newUser.senha &&
-        this.newUser.confirmacaoSenha &&
-        this.newUser.telefone &&
-        this.newUser.cpf
-      );
+
+    // Função para abrir o modal de endereço
+    openAddressModal() {
+      this.showAddressModal = true;
     },
+
+    // Função para fechar o modal de endereço
+    closeAddressModal() {
+      this.showAddressModal = false;
+    },
+
+    // Função para registrar o usuário
     async submit() {
-      if (!this.validateAddress()) {
-        alert('Preencha todos os campos de endereço.');
+      if (!this.validateForm()) {
+        alert('Preencha todos os campos obrigatórios.');
+        return;
+      }
+
+      // Validação de senha
+      if (this.newUser.senha !== this.newUser.confirmacaoSenha) {
+        alert('As senhas não coincidem.');
         return;
       }
 
@@ -69,48 +88,65 @@ export default {
         if (response.status === 201) {
           alert('Registro realizado com sucesso!');
           this.resetForm();
+          this.closeAddressModal();
+
+
+          // Redireciona para a página inicial após o registro
+          this.$router.push('/');
         }
       } catch (error) {
         console.error('Erro ao registrar:', error);
         alert('Erro ao registrar. Tente novamente.');
       }
     },
-    validateAddress() {
+
+    // Função para validar o formulário antes de enviar
+    validateForm() {
       return (
+        this.newUser.nome &&
+        this.newUser.sobrenome &&
+        this.newUser.email &&
+        this.address.cep &&
         this.address.rua &&
         this.address.numero &&
         this.address.bairro &&
         this.address.cidade &&
-        this.address.estado &&
-        this.address.cep
+        this.address.estado
       );
     },
+
+    // Função para resetar os campos do formulário
     resetForm() {
       this.newUser = {
         nome: '',
         sobrenome: '',
+        email: '',
         username: '',
         nascimento: '',
-        email: '',
         senha: '',
         confirmacaoSenha: '',
         telefone: '',
         cpf: '',
         foto: null
       };
+      this.resetAddressFields();
+    },
+
+    // Função para resetar os campos de endereço
+    resetAddressFields() {
       this.address = {
+        cep: '',
         rua: '',
         numero: '',
         bairro: '',
         cidade: '',
-        estado: '',
-        cep: ''
+        estado: ''
       };
-      this.showAddressModal = false;
     }
   }
 };
 </script>
+
 
 <template>
   <div class="app">
@@ -119,6 +155,9 @@ export default {
     <div class="circle medium"></div>
     <div class="circle extra-large"></div>
     <div class="circle final"></div>
+    <div class="circle additional1"></div>
+    <div class="circle additional2"></div>
+    <div class="circle additional3"></div>
 
     <!-- Container Principal -->
     <div v-if="!showAddressModal" class="container">
@@ -161,26 +200,45 @@ export default {
 
     <!-- Modal de Endereço -->
     <div v-if="showAddressModal" class="modal">
-      <div class="modal-content">
-        <button @click="showAddressModal = false">Voltar</button>
-        <h2>Endereço</h2>
-        <div class="input-group">
-          <input type="text" placeholder="Rua" v-model="address.rua" required />
-        </div>
-        <div class="input-group">
-          <input type="text" placeholder="Número" v-model="address.numero" required />
-        </div>
-        <div class="input-group">
-          <input type="text" placeholder="Bairro" v-model="address.bairro" required />
-        </div>
-        <div class="input-group">
-          <input type="text" placeholder="Cidade" v-model="address.cidade" required />
-        </div>
-        <button @click="submit">Registrar</button>
-      </div>
+  <div class="modal-content button-voltar">
+    <button @click="showAddressModal = false">Voltar</button>
+    <h2>Endereço</h2>
+
+    <!-- Input para o CEP -->
+    <div class="input-group">
+      <input 
+        type="text" 
+        placeholder="CEP" 
+        v-model="address.cep" 
+        @blur="buscarEndereco" 
+        maxlength="9" 
+        required 
+      />
     </div>
+    
+    <!-- Outros inputs para o endereço -->
+    <div class="input-group">
+      <input type="text" placeholder="Rua" v-model="address.rua" required />
+    </div>
+    <div class="input-group">
+      <input type="text" placeholder="Número" v-model="address.numero" required />
+    </div>
+    <div class="input-group">
+      <input type="text" placeholder="Bairro" v-model="address.bairro" required />
+    </div>
+    <div class="input-group">
+      <input type="text" placeholder="Cidade" v-model="address.cidade" required />
+    </div>
+    <div class="input-group">
+      <input type="text" placeholder="Estado" v-model="address.estado" required />
+    </div>
+
+    <button @click="submit">Registrar</button>
+  </div>
+</div>
   </div>
 </template>
+
 
 <style scoped>
 body {
@@ -217,9 +275,9 @@ body {
 }
 
 .circle.extra-large {
-  width: 890px;
+  width: 890px;                                
   height: 890px;
-  background: #838282;
+  background: linear-gradient(207deg, #B8B8B8 30.01%, #683636 68.84%);
   left: -320px;
   z-index: 1;
   margin-bottom: 150px
@@ -232,6 +290,13 @@ body {
   right: 50px;
   z-index: 7;
 }
+
+.circle.additional1 { width: 300px; height: 300px; top: 65%; right: 20%;  background: #616161; }
+.circle.additional2 { width: 400px; height: 400px; top: 20%; left: 50%; background: #634949; }
+.circle.additional3 { width: 250px; height: 250px; bottom: 30%; left: 10%; background: #df0c87; }
+
+
+
 
 .container {
   display: flex;
@@ -376,7 +441,14 @@ button:disabled {
   width: 100%;
   padding: 15px;
   font-size: 16px;
+  margin-bottom: 15px;
   border-radius: 10px;
+  border: 1px solid #b8b8b8;
+  background-color: #f5f5f5;
+  color: #333;
+  outline: none;
+  transition: border-color 0.3s ease;
+
 }
 
 .modal-content button {
