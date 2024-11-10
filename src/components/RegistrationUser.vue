@@ -114,11 +114,13 @@ export default {
 
 <template>
   <div class="app">
+    <!-- Círculos de fundo -->
     <div class="circle small"></div>
     <div class="circle medium"></div>
     <div class="circle extra-large"></div>
     <div class="circle final"></div>
 
+    <!-- Container Principal -->
     <div v-if="!showAddressModal" class="container">
       <div class="left-section">
         <h2>REGISTRE-SE</h2>
@@ -154,13 +156,10 @@ export default {
         <div class="input-group">
           <input type="text" placeholder="Telefone" v-model="newUser.telefone" required />
         </div>
-        <div class="input-group">
-          <label for="file-upload" class="custom-file-upload">Selecionar Foto (Opcional)</label>
-          <input id="file-upload" type="file" @change="handleFileUpload" />
-        </div>
       </div>
     </div>
 
+    <!-- Modal de Endereço -->
     <div v-if="showAddressModal" class="modal">
       <div class="modal-content">
         <button @click="showAddressModal = false">Voltar</button>
@@ -177,12 +176,6 @@ export default {
         <div class="input-group">
           <input type="text" placeholder="Cidade" v-model="address.cidade" required />
         </div>
-        <div class="input-group">
-          <input type="text" placeholder="Estado" v-model="address.estado" required />
-        </div>
-        <div class="input-group">
-          <input type="text" placeholder="CEP" v-model="address.cep" required />
-        </div>
         <button @click="submit">Registrar</button>
       </div>
     </div>
@@ -190,7 +183,6 @@ export default {
 </template>
 
 <style scoped>
-/* Estilos Gerais */
 body {
   display: flex;
   justify-content: center;
@@ -201,38 +193,140 @@ body {
   overflow: hidden;
 }
 
-.circle { position: absolute; border-radius: 50%; }
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 1;
+}
 
-.small { width: 200px; height: 200px; background: #d9d9d9;}
-.medium { width: 450px; height: 450px; background: #b8b8b8;}
+.small { width: 200px; height: 200px; background: #d9d9d9; }
+.medium { width: 450px; height: 450px; background: #b8b8b8; }
 .extra-large { width: 650px; height: 650px; background: #7e7e7e; }
 .final { width: 450px; height: 450px; background: #5c2323; }
 
 .container {
   display: flex;
-  width: 90%;
-  max-width: 900px;
-  background: rgba(58, 58, 58, 0.8);
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+  background: rgba(58, 58, 58, 0.9);
   border-radius: 20px;
-  padding: 30px;
+  padding: 40px;
+  width: 80%;
+  max-width: 1000px;
+  position: relative;
+  margin-top: 20px;
 }
 
-.left-section, .right-section { width: 45%; }
+.left-section, .right-section {
+  width: 45%;
+}
+
+h2 {
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.input-group {
+  margin-bottom: 25px;
+}
 
 input {
   width: 100%;
-  padding: 10px;
+  padding: 15px;
+  font-size: 16px;
   margin-bottom: 15px;
+  border-radius: 10px;
+  border: 1px solid #b8b8b8;
+  background-color: #f5f5f5;
+  color: #333;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #007acc;
+}
+
+.custom-file-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  background-color: #7e7e7e;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 button {
+  padding: 15px;
   background-color: #03b1ff;
-  color: #fff;
+  color: white;
   border: none;
-  padding: 10px;
   border-radius: 50px;
   cursor: pointer;
+  margin-top: 20px;
+  width: 100%;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
 }
-button:hover { background-color: #007acc; }
-.modal { display: flex; align-items: center; justify-content: center; }
+
+button:hover {
+  background-color: #007acc;
+}
+
+button:disabled {
+  background-color: #aaaaaa;
+  cursor: not-allowed;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+
+.modal-content {
+  background: #3a3a3a;
+  padding: 40px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 600px;
+}
+
+.modal-content h2 {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.modal-content .input-group {
+  margin-bottom: 20px;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  border-radius: 10px;
+}
+
+.modal-content button {
+  background-color: #5c2323;
+  margin-top: 20px;
+}
+
+.modal-content button:hover {
+  background-color: #7e7e7e;
+}
 </style>
+
