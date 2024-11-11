@@ -38,13 +38,18 @@ export default {
         console.error("Erro ao fazer login:", error);
         alert("Erro ao fazer login. Tente novamente.");
       }
+    },
+    // Função para redirecionar para a página de registro
+    redirectToRegister() {
+      this.$router.push("/registration");
     }
   }
-
 };
-
-
 </script>
+
+
+
+
 
 
 <template>
@@ -100,10 +105,14 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #ffffff;
+ 
   margin: 0;
   position: relative;
   overflow: hidden;
+  background-image: url('@/assets/images/preto.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .circle {
