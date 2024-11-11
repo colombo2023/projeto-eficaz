@@ -37,7 +37,7 @@ function goToProfile() {
 <template>
     <nav class="w-[auto] h-[95px] flex-shrink-0 flex items-center justify-between px-12 navbar__styles">
         <div class="flex items-center navbar__logo">
-            <img src="../assets/images/logo.svg" alt="Logo" class="h-12 navbar__logo">
+            <img src="../assets/images/gabinipreto.png" alt="Logo" class="h-12 navbar__logo">
         </div>
 
         <!-- Menu normal -->

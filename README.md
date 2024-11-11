@@ -2,6 +2,16 @@
 
 Este repositório contém o código-fonte para o site **Gabini Headset Store**, uma loja virtual focada na venda de headsets de alta qualidade. O projeto é desenvolvido utilizando **HTML, CSS** e inclui integrações com bibliotecas como **Font Awesome** e **Bootstrap Icons** para estilização.
 
+
+## Desenvolvedor
+- **Nome:** [Seu Nome]
+- **RA:** [Seu RA]
+
+## Links do Projeto
+- **Figma:** [Link para o Figma](https://figma.com)
+- **Trello:** [Link para o Trello](https://trello.com)
+
+
 ## Tabela de Conteúdos
 
 - [Visão Geral](#visão-geral)
@@ -35,6 +45,13 @@ O projeto está organizado da seguinte maneira:
 - **assets/JS/**: Contém o arquivo JavaScript utilizado para interações (futuras funcionalidades).
 - **index.html**: O arquivo HTML principal que contém a estrutura do site.
 
+### 📁 `C#`
+- Esta pasta contém a **API** para o sistema de login e registro de usuários.
+  - Implementa autenticação segura utilizando C# e .NET.
+  - Comunicação com o frontend é realizada através de **endpoints RESTful**.
+
+---
+
 ## Pré-requisitos
 
 Antes de começar, você vai precisar ter instalado na sua máquina:
@@ -59,8 +76,29 @@ Toda a estilização é feita utilizando CSS localizado no arquivo style.css den
 ## Tecnologias Utilizadas
 O projeto utiliza as seguintes tecnologias:
 
-- **HTML5:** Para a estruturação do conteúdo.
-- **CSS3:** Para a estilização e layout responsivo.
-- **Font Awesome:** Ícones utilizados nos botões e avaliações de produtos.
-- **Bootstrap Icons:** Ícones adicionais para o design.
-- **JavaScript:** Para implementar funcionalidades dinâmicas no site.
+### Frontend
+- **Vue.js**: Framework JavaScript utilizado para o desenvolvimento do frontend.
+- **Tailwind CSS**: Framework de utilitários para estilização rápida e responsiva.
+- **HTML5**: Para a estruturação do conteúdo.
+- **CSS3**: Para estilização adicional e customização.
+- **Font Awesome**: Ícones utilizados nos botões e avaliações de produtos.
+- **Bootstrap Icons**: Ícones adicionais para aprimorar o design.
+- **JavaScript**: Para funcionalidades dinâmicas e interativas.
+
+### Backend
+- **C# (.NET Core)**: Utilizado para o desenvolvimento da API de autenticação e gerenciamento de usuários.
+- **Entity Framework**: Para a comunicação com o banco de dados.
+- **RESTful API**: Arquitetura para a integração entre frontend e backend.
+
+### Outros
+- **Figma**: Ferramenta de design para criação de wireframes e protótipos.
+- **Trello**: Para gestão de tarefas e organização do projeto.
+
+
+### O que foi atualizado:
+
+- Incluí uma seção inicial para **nome, RA, Figma e Trello**.
+- Estrutura detalhada com base na organização do projeto que você enviou na imagem.
+- Instruções claras de como executar o projeto tanto para o frontend quanto para o backend.
+
+**Caso queira ajustar ou adicionar mais detalhes**, sinta-se à vontade para me informar! 😊

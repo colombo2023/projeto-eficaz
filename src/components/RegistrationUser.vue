@@ -31,7 +31,7 @@ export default {
   methods: {
     // Função para buscar endereço com base no CEP
     async buscarEndereco() {
-      const cep = this.address.cep.replace(/\D/g, ''); // Remove caracteres não numéricos
+      const cep = this.address.cep.replace(/\D/g, '');
       if (cep.length === 8) {
         try {
           const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
@@ -90,7 +90,6 @@ export default {
           this.resetForm();
           this.closeAddressModal();
 
-
           // Redireciona para a página inicial após o registro
           this.$router.push('/');
         }
@@ -142,10 +141,21 @@ export default {
         cidade: '',
         estado: ''
       };
+    },
+
+    // Função para redirecionar para a página de registro
+    redirectToRegister() {
+      this.$router.push('/register');
+    },
+
+    // Função para redirecionar para a página inicial
+    VoltarInicio() {
+      this.$router.push('/');
     }
   }
 };
 </script>
+
 
 
 <template>
@@ -161,6 +171,7 @@ export default {
 
     <!-- Container Principal -->
     <div v-if="!showAddressModal" class="container">
+      <button class="buttonVoltar" @click="VoltarInicio">Voltar</button>
       <div class="left-section">
         <h2>REGISTRE-SE</h2>
         <div class="input-group">
@@ -241,6 +252,13 @@ export default {
 
 
 <style scoped>
+
+.buttonVoltar{
+  height: 40px;
+  width: 70px;
+  margin-bottom: 550px; 
+}
+
 body {
   display: flex;
   justify-content: center;
