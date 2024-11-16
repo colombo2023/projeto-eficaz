@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "DLlaVVTsDQtaB3/mEXxHDMluQEROEb4XD+hNafZxVOA=",
+  "Source": "Usuarios",
+  "BasePath": "_content/Usuarios",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Usuarios\\wwwroot",
+      "Source": "Usuarios",
+      "ContentRoot": "C:\\Users\\Gamer\\OneDrive\\Área de Trabalho\\Usuarios_cadastro\\Usuarios\\wwwroot\\",
+      "BasePath": "_content/Usuarios",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Gamer\\OneDrive\\Área de Trabalho\\Usuarios_cadastro\\Usuarios\\wwwroot\\usuarios\\5768280c-c1b4-4b16-b9b9-223e2ab17d63.jpg",
+      "SourceId": "Usuarios",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Gamer\\OneDrive\\Área de Trabalho\\Usuarios_cadastro\\Usuarios\\wwwroot\\",
+      "BasePath": "_content/Usuarios",
+      "RelativePath": "usuarios/5768280c-c1b4-4b16-b9b9-223e2ab17d63.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\usuarios\\5768280c-c1b4-4b16-b9b9-223e2ab17d63.jpg"
+    }
+  ]
+}

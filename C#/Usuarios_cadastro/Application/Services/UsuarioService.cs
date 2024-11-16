@@ -35,7 +35,7 @@ namespace Application.Services {
         public async Task<UsuarioModels> GetUsuarioOrThrowException(string usuarioId) {
 			UsuarioModels? usuario = await GetUsuario(usuarioId);
 			if (usuario == null) {
-				throw new Exception("Usuário não encontrado");
+				throw new Exception("Usuário não foi encontrado");
 			}
 			return usuario;
 		}
