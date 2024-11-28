@@ -9,7 +9,7 @@ Este repositório contém o código-fonte para o site **Gabini Headset Store**, 
 
 ## Links do Projeto
 - **Figma:** [Link para o Figma](https://www.figma.com/design/rzRGGQy4F36n7qForECTE4/tela-de-registro?node-id=3-2&t=LN7Yyeso1FBlbyAu-1)
-- **Trello:** [Link para o Trello](https://trello.com)
+- **Trello:** [Link para o Trello]([https://trello.com](https://trello.com/b/0CYiBvrz/ctrl-c-ctrl-v))
 
 
 ## Tabela de Conteúdos
